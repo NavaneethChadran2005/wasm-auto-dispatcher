@@ -1,0 +1,1 @@
+[{"kernel":"matmul","N":32},{"kernel":"matmul","N":96},{"kernel":"saxpy","N":4096},{"kernel":"saxpy","N":65536}]

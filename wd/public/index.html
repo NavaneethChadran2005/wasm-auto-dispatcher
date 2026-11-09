@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wasm back-end dispatcher · CS4098E</title>
+<style>
+  :root { --bg:#fff; --fg:#1b1f24; --mute:#59636e; --line:#d0d7de; --card:#f6f8fa; --acc:#0969da; --bad:#cf222e; --good:#1a7f37; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --mute:#8b949e; --line:#30363d; --card:#161b22; --acc:#58a6ff; --bad:#ff7b72; --good:#3fb950; } }
+  body { margin:0; padding:1.25rem; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui, sans-serif; max-width:1000px; margin-inline:auto; }
+  h1 { font-size:1.3rem; margin:.2rem 0 1rem } h2 { font-size:1.05rem; margin:0 0 .6rem }
+  section { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:1rem; margin-bottom:1rem; }
+  label { display:inline-block; margin:.2rem .8rem .2rem 0 } input[type=text], input[type=number], select { background:var(--bg); color:var(--fg); border:1px solid var(--line); border-radius:6px; padding:.25rem .4rem; }
+  button { background:var(--acc); color:#fff; border:0; border-radius:6px; padding:.4rem .8rem; cursor:pointer; margin:.2rem .3rem .2rem 0 } button:disabled { opacity:.45; cursor:default }
+  table { border-collapse:collapse; width:100%; font-size:.85rem } th, td { border-bottom:1px solid var(--line); padding:.25rem .4rem; text-align:right } th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align:left }
+  pre { background:var(--bg); border:1px solid var(--line); border-radius:6px; padding:.5rem; max-height:240px; overflow:auto; font-size:.8rem; margin:.5rem 0 0 }
+  .ok { color:var(--good) } .no { color:var(--bad) } .mute { color:var(--mute) } .scroll { overflow-x:auto }
+</style>
+</head>
+<body>
+<h1>Cost-model-driven back-end dispatcher <span class="mute">· CS4098E</span></h1>
+
+<section>
+  <h2>1. Environment</h2>
+  <div id="env" class="mute">detecting…</div>
+</section>
+
+<section>
+  <h2>2. Benchmark (produces the dataset for analysis)</h2>
+  <div id="backendBoxes"></div>
+  <div>
+    <label>matmul sizes <input id="sz-matmul" type="text" size="34"></label>
+    <label>saxpy sizes <input id="sz-saxpy" type="text" size="44"></label>
+  </div>
+  <div>
+    <label>max reps <input id="maxReps" type="number" value="30" min="5" style="width:5rem"></label>
+    <label>time budget / case (ms) <input id="budget" type="number" value="4000" min="500" style="width:6rem"></label>
+  </div>
+  <button id="runBench" disabled>Run benchmark</button>
+  <button id="download" disabled>Download JSON</button>
+  <span id="benchState" class="mute"></span>
+  <div class="scroll"><table id="results" hidden><thead><tr><th>kernel</th><th>N</th><th>back-end</th><th>first (ms)</th><th>median (ms)</th><th>95% CI</th><th>GFLOP/s</th><th>reps</th><th>ok</th></tr></thead><tbody></tbody></table></div>
+</section>
+
+<section>
+  <h2>3. Dispatcher demo</h2>
+  <label>kernel <select id="dKernel"></select></label>
+  <label>size N <input id="dN" type="number" value="512" style="width:8rem"></label>
+  <label>expected calls m <input id="dM" type="number" value="10" min="1" style="width:5rem"></label>
+  <label>policy <select id="dPolicy"><option value="model">cost model (M2)</option><option value="static">static table (M0)</option></select></label>
+  <div>
+    <button id="calib" disabled>Calibrate on this device</button>
+    <button id="runD" disabled>Run via dispatcher</button>
+  </div>
+  <div id="dOut" class="mute"></div>
+</section>
+
+<section>
+  <h2>Log</h2>
+  <pre id="log"></pre>
+</section>
+
+<script type="module" src="js/ui.js"></script>
+</body>
+</html>

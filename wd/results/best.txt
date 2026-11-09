@@ -1,0 +1,21 @@
+# Best back-end per payload (measured remotely)
+# device label : pi4
+# browser      : Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36
+# cores/features: 4 cores, simd=true, threads=true, webgpu=false, isolated=true
+# generated    : 2026-11-08T15:36:48.341Z
+# steady = lowest median time per call;  total(m=10) = load + setup + first call + (m-1) x median
+#
+kernel  N        best_steady  median_ms  GFLOP/s  best_total(m)   total_ms  all medians (ms)
+matmul  64       simd         0.340      1.54     js (m=10)       25.55     simd=0.340 wasm=0.665 threads=0.890 js=1.980
+matmul  128      threads      1.805      2.32     js (m=10)       135.86    threads=1.805 simd=1.945 wasm=4.985 js=13.575
+matmul  192      threads      3.080      4.60     simd (m=10)     195.92    threads=3.080 simd=6.145 wasm=16.510 js=44.600
+matmul  256      threads      7.055      4.76     simd (m=10)     285.75    threads=7.055 simd=15.185 wasm=40.135 js=105.510
+matmul  384      threads      16.180     7.00     simd (m=10)     611.44    threads=16.180 simd=47.435 wasm=131.933 js=353.945
+matmul  512      threads      44.340     6.05     threads (m=10)  1123.04   threads=44.340 simd=125.537 wasm=315.575 js=844.610
+saxpy   16384    simd         0.195      0.17     js (m=10)       7.60      simd=0.195 wasm=0.210 js=0.400 threads=0.870
+saxpy   65536    wasm         0.735      0.18     js (m=10)       7.41      wasm=0.735 js=0.750 simd=1.125 threads=1.600
+saxpy   262144   js           2.745      0.19     js (m=10)       27.50     js=2.745 wasm=3.355 simd=3.400 threads=4.215
+saxpy   1048576  js           9.785      0.21     js (m=10)       97.83     js=9.785 wasm=12.150 simd=12.480 threads=14.720
+saxpy   4194304  js           38.535     0.22     js (m=10)       385.60    js=38.535 threads=50.495 simd=50.980 wasm=52.560
+
+# highest throughput overall: matmul N=384 on threads at 7.00 GFLOP/s (16.180 ms)

@@ -1,0 +1,14 @@
+{
+  "name": "wasm-backend-dispatcher",
+  "version": "0.1.0",
+  "description": "CS4098E: cost-model-driven back-end dispatcher (JS / Wasm / SIMD / threads / WebGPU)",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "node server.js",
+    "test": "node tests/node-test.mjs",
+    "synthetic": "node analysis/make_synthetic.mjs",
+    "evaluate": "node analysis/evaluate.mjs analysis/sample-data/synthetic_device_A.json analysis/sample-data/synthetic_device_B.json"
+  },
+  "license": "MIT"
+}
