@@ -25,9 +25,10 @@ async function boot() {
     $("dKernel").insertAdjacentHTML("beforeend", `<option value="${k}">${k}</option>`);
   }
   for (const id of ["runBench", "calib"]) $(id).disabled = false;
+  startBenchmark();
 }
 
-$("runBench").onclick = async () => {
+async function startBenchmark() {
   const chosen = new Map([...document.querySelectorAll(".bk:checked")].map((c) => [c.value, backends.get(c.value)]));
   const plan = Object.fromEntries(Object.keys(KERNELS).map((k) => [k, parseSizes($("sz-" + k).value)]).filter(([, v]) => v.length));
   $("runBench").disabled = true; $("benchState").textContent = "running… keep this tab in the foreground";
@@ -48,7 +49,9 @@ $("runBench").onclick = async () => {
     $("download").disabled = false; $("benchState").textContent = "done";
   } catch (e) { log("benchmark error: " + e); $("benchState").textContent = "failed (see log)"; }
   $("runBench").disabled = false;
-};
+}
+
+$("runBench").onclick = startBenchmark;
 
 $("download").onclick = () => {
   const name = `wasm-bench-${(features.gpu?.vendor || "cpu")}-${new Date().toISOString().slice(0, 16).replace(/[:T]/g, "")}.json`;

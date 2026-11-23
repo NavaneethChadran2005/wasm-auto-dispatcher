@@ -1,16 +1,61 @@
 <!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
-<title>Remote benchmark worker</title>
-<style>body{font:14px/1.5 system-ui,sans-serif;max-width:760px;margin:1.5rem auto;padding:0 1rem}pre{background:#8881;border:1px solid #8884;border-radius:6px;padding:.6rem;max-height:60vh;overflow:auto}</style>
-<h2>Remote benchmark worker</h2>
-<p id="state">starting…</p>
-<pre id="log"></pre>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Device benchmark</title>
+<style>
+  :root { --bg:#fff; --fg:#1b1f24; --mute:#59636e; --line:#d0d7de; --card:#f6f8fa; --acc:#0969da; --bad:#cf222e; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --mute:#8b949e; --line:#30363d; --card:#161b22; --acc:#58a6ff; --bad:#ff7b72; } }
+  body { margin:0; padding:1.1rem; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui,sans-serif; max-width:820px; margin-inline:auto; }
+  h1 { font-size:1.2rem; margin:.2rem 0 .8rem } .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:.8rem 1rem; margin-bottom:.8rem; }
+  progress { width:100%; height:1rem } .mute { color:var(--mute) } .warn { color:var(--bad) }
+  pre { background:var(--bg); border:1px solid var(--line); border-radius:6px; padding:.6rem; overflow:auto; font-size:.78rem; max-height:55vh }
+  button { background:var(--acc); color:#fff; border:0; border-radius:6px; padding:.4rem .8rem; cursor:pointer }
+</style>
+</head>
+<body>
+<h1>Measuring the best back-end for this device</h1>
+<div class="card">
+  <div id="state">starting…</div>
+  <progress id="bar" value="0" max="1"></progress>
+  <div id="env" class="mute"></div>
+  <div id="warn" class="warn"></div>
+  <div class="mute">Keep this tab open and in the foreground until it finishes (about a minute or two).</div>
+</div>
+<div class="card" id="reportCard" hidden>
+  <h2 style="font-size:1rem;margin:.1rem 0 .5rem">Report for this device</h2>
+  <pre id="report"></pre>
+  <button id="dl">Download report</button>
+</div>
+<details class="card"><summary class="mute">Log</summary><pre id="log"></pre></details>
+
 <script type="module">
   import { runWorker } from "./js/worker_client.js";
-  const log = (m) => { const el = document.getElementById("log"); el.textContent += m + "\n"; el.scrollTop = el.scrollHeight; };
-  const state = document.getElementById("state");
-  state.textContent = "initialising back-ends… (keep this tab open)";
-  runWorker({ log: (m) => { log(m); if (m.startsWith("job")) state.textContent = m; } })
-    .then((n) => { state.textContent = `finished: ${n} job(s) done. You can close this tab.`; })
-    .catch((e) => { state.textContent = "error: " + e; log(String(e.stack ?? e)); });
+  import { detectFeatures } from "./js/features.js";
+  const $ = (id) => document.getElementById(id);
+  const log = (m) => { $("log").textContent += m + "\n"; };
+  const label = new URLSearchParams(location.search).get("label") ?? "";   // e.g. http://host:8080/?label=pixel7
+
+  const f = await detectFeatures();
+  const yn = (b) => (b ? "yes" : "no");
+  $("env").textContent = `${f.cores} cores · SIMD ${yn(f.simd)} · threads ${yn(f.threads)} · WebGPU ${yn(f.webgpu)} · secure context ${yn(f.secureContext)}`;
+  if (!f.secureContext)
+    $("warn").textContent = "Plain HTTP on a network address: this browser disables WebGPU and threads and blunts timers, so only JS / WASM / SIMD can be tested here.";
+
+  try {
+    const r = await runWorker({
+      label, log,
+      onProgress: ({ done, total, text }) => { $("bar").max = total || 1; $("bar").value = done; $("state").textContent = text; },
+    });
+    $("state").textContent = `finished: ${r.jobsDone} payloads measured. The report was also saved on the host.`;
+    $("report").textContent = r.report;
+    $("reportCard").hidden = false;
+    $("dl").onclick = () => {
+      const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(new Blob([r.report], { type: "text/plain" })), download: "backend-report.txt" });
+      a.click(); URL.revokeObjectURL(a.href);
+    };
+  } catch (e) { $("state").textContent = "error: " + e; log(String(e.stack ?? e)); }
 </script>
+</body>
+</html>

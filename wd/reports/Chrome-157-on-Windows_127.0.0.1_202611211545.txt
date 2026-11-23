@@ -1,0 +1,32 @@
+==============================================================================
+ BACK-END REPORT: Chrome 157 on Windows
+==============================================================================
+ device       : Chrome 157 on Windows   (ip 127.0.0.1, client e056w727)
+ browser UA   : Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36
+ hardware     : 16 logical cores, ~16 GB RAM, GPU amd
+ capabilities : SIMD yes | threads yes | WebGPU yes | secure context yes | isolated yes
+ timer tick   : 0.005 ms   (medians below 0.20 ms are marked '?' = unreliable)
+ back-ends run: js, wasm, simd, threads, webgpu
+ payloads     : 9 measured, 0 failed, 0 skipped   | started 2026-11-21T15:45:32.975Z
+
+ BEST BACK-END PER PAYLOAD   (steady = lowest median ms per call; total = load+setup+first call+(m-1)*median)
+  kernel  N        best_steady  median_ms  GFLOP/s  best_total(m)   total_ms  all medians (ms)
+  matmul  128      threads?     0.175      23.97    simd? (m=10)    7.85      threads=0.175 simd=0.380 wasm=0.735 js=2.605 webgpu=5.990
+  matmul  192      threads      0.395      35.84    simd (m=10)     11.11     threads=0.395 simd=0.795 wasm=2.215 webgpu=5.615 js=8.890
+  matmul  256      threads      0.615      54.56    simd (m=10)     21.04     threads=0.615 simd=1.795 wasm=5.315 webgpu=5.940 js=21.350
+  matmul  384      threads      2.340      48.40    threads (m=10)  57.76     threads=2.340 simd=6.415 webgpu=6.575 wasm=36.450 js=145.015
+  matmul  512      threads      7.620      35.23    threads (m=10)  109.10    threads=7.620 webgpu=9.090 simd=28.085 wasm=86.755 js=333.555
+  matmul  768      webgpu       14.275     63.47    threads (m=10)  274.79    webgpu=14.275 threads=24.190 simd=92.395 wasm=292.430 js=1128.245
+  saxpy   262144   simd         0.480      1.09     simd (m=10)     8.05      simd=0.480 wasm=0.580 threads=0.930 js=1.515 webgpu=8.230
+  saxpy   1048576  simd         1.965      1.07     simd (m=10)     22.90     simd=1.965 wasm=2.165 threads=3.000 js=5.910 webgpu=10.030
+  saxpy   4194304  simd         12.185     0.69     wasm (m=10)     130.48    simd=12.185 wasm=12.760 threads=13.175 js=25.930 webgpu=33.725
+
+ RECOMMENDATION FOR THIS DEVICE
+  matmul
+    repeated calls : N=192-512: threads;  N=768: webgpu
+    single call    : N=192-384: simd;  N=512-768: threads   (includes start-up cost)
+  saxpy
+    repeated calls : N=262144-4194304: simd
+    single call    : N=262144-1048576: simd;  N=4194304: wasm   (includes start-up cost)
+
+ '?' = measurement within timer noise; treat as unreliable. Rankings use medians of repeated calls; spreads are in the dataset .json.

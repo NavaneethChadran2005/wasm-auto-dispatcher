@@ -51,3 +51,14 @@ export function relMaxError(out, ref) {
   }
   return maxDiff / (maxRef || 1);
 }
+
+/** Smallest observable tick of performance.now() in ms (browsers coarsen it unless cross-origin isolated). */
+export function measureTimerResolution(samples = 20) {
+  let min = Infinity, last = now(), count = 0;
+  const t0 = now();
+  while (count < samples && now() - t0 < 500) {
+    const t = now();
+    if (t > last) { min = Math.min(min, t - last); last = t; count++; }
+  }
+  return Number.isFinite(min) ? min : 1;
+}

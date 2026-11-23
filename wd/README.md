@@ -31,10 +31,31 @@ Success measure: **regret = latency(chosen) / latency(best in hindsight)**.
 ```bash
 node build.mjs          # optional: only if you change src/kernels.c
 node tests/node-test.mjs
-node server.js          # open http://localhost:8080 in Chrome (add `--https cert key` for HTTPS)
+node server.js          # static interactive UI at http://localhost:8080
 ```
-Browser page: (1) check the environment line (SIMD / isolated / threads / WebGPU all "yes"),
-(2) **Run benchmark**, then **Download JSON**, (3) **Calibrate** and **Run via dispatcher**.
+When the browser page opens, it checks the environment and automatically starts the benchmark; keep the tab in the
+foreground while it runs. Use **Run benchmark** to run it again, **Download JSON** to save the results, and
+**Calibrate** / **Run via dispatcher** for the dispatcher demo.
+
+`node server.js` / `npm run serve` is the static interactive UI only. For a server-controlled run where a device
+automatically executes queued payloads after opening the link, start the controller instead:
+
+```bash
+npm run benchmark -- --label pi4 --quick
+```
+
+The controller serves the worker page and API; its root URL redirects to the worker. Use `--quick` to shorten the
+default workload. The worker page polls the server and displays connection state, job progress, and winners. For
+direct HTTPS hosting, provide a trusted certificate and its private key:
+
+```bash
+npm run benchmark -- --label pi4 --quick --https-cert /path/to/fullchain.pem --https-key /path/to/private-key.pem
+```
+
+Open the HTTPS URL printed by the controller on the device. It automatically initializes supported backends, registers
+with the controller, executes queued payloads, and submits results; no button press is required. The certificate must
+be trusted by the device and match the hostname. Alternatively, terminate HTTPS at a reverse proxy in front of the
+controller and proxy both the worker page and `/api/*` to that same controller, preserving its COOP/COEP headers.
 
 Evaluate collected data (one JSON per device, 2 or more recommended):
 ```bash
@@ -73,7 +94,8 @@ on the browser version, so check the environment line before relying on it.
 Your laptop (WSL) runs a **controller** that queues small payloads. A browser on the Pi runs a **worker page**
 that pulls one payload at a time (HTTP long-polling), runs *every available back-end* on it, and posts the timings
 back. The controller picks the best back-end per payload and writes `results/best.txt`
-plus `results/dataset-<label>-<time>.json` (same schema as the UI download, so `analysis/evaluate.mjs` accepts it).
+plus `results/dataset-<label>-<time>.json` (same schema as the UI download, so `analysis/evaluate.mjs` accepts it),
+and a browsable `results/report-<label>-<time>.html` containing device details, per-payload winners, and backend timings.
 
 **Why an SSH reverse tunnel.** Opening `http://<laptop-ip>:8080` on the Pi is not a secure context, so threads
 (and WebGPU) are disabled and `performance.now()` is coarsened to 0.1 ms. Tunnelling makes the Pi see the controller
@@ -89,8 +111,23 @@ scripts/run-on-pi.sh pi@<pi-ip> pi4            # add --quick for a short run, --
 node controller.js --label pi4
 # WSL terminal 2
 ssh -R 8080:localhost:8080 pi@<pi-ip>
-# on the Pi: open  http://localhost:8080/worker.html   (must say localhost, not the laptop's IP)
+# on the Pi: open http://localhost:8080/ (must say localhost, not the laptop's IP)
 ```
+
+**Hosted, unattended worker:** run `npm run benchmark -- --label <device-label> --https-cert <fullchain.pem> --https-key <private-key.pem>`
+on the server and configure the device's browser to open `https://<your-host>:8080/` at boot (or use your reverse-proxy URL).
+The root URL automatically opens the worker page, which registers with the controller and runs the queued payloads without further input. Keep the tab open and the device
+powered on. The worker page displays progress and the final per-payload backend comparison; the server also writes
+`results/best.txt`, `results/dataset-<label>-<time>.json`, and `results/report-<label>-<time>.html`. Open the report
+HTML file in a browser to review results for that device. `GET /api/status` provides the current run status.
+
+The server controls job scheduling, collection, ranking, and output; the benchmark code necessarily executes in the
+device's browser because browsers do not let a server execute JavaScript/Wasm inside a remote tab. Configure the
+device's boot-time browser launch once (for example, Firefox kiosk/autostart); the server cannot launch a browser on
+a device that has not already been configured to visit its URL. For remote devices, host behind HTTPS and preserve
+the server's COOP/COEP response headers; these are needed for threaded Wasm and cross-origin isolation. Plain HTTP
+on a LAN is not a secure context and may disable those features.
+
 Options: `--out DIR` (e.g. `/mnt/c/Users/<you>/Documents/wasm-results` to land on the Windows side), `--m N` (expected calls
 for the "best_total" column), `--jobs file.json` (custom payloads, e.g. `[{"kernel":"matmul","N":256,"m":50}]`),
 `--reps`/`--budget` (precision vs. time), `--exit-when-done`.

@@ -6,6 +6,7 @@
   "scripts": {
     "build": "node build.mjs",
     "serve": "node server.js",
+    "benchmark": "node controller.js",
     "test": "node tests/node-test.mjs",
     "synthetic": "node analysis/make_synthetic.mjs",
     "evaluate": "node analysis/evaluate.mjs analysis/sample-data/synthetic_device_A.json analysis/sample-data/synthetic_device_B.json"

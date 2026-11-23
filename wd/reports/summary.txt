@@ -1,0 +1,7 @@
+2026-11-11T10:19:55.448Z  Edge 157 on Windows      172.20.16.1     matmul:simd@N=768  saxpy:js@N=4194304  -> Edge-157-on-Windows_172.20.16.1_202611111019.txt
+2026-11-21T15:46:01.311Z  Chrome 157 on Windows    127.0.0.1       matmul:webgpu@N=768  saxpy:simd@N=4194304  -> Chrome-157-on-Windows_127.0.0.1_202611211545.txt
+2026-11-21T15:48:42.258Z  Chrome 150 on Windows    127.0.0.1       matmul:webgpu@N=768  saxpy:simd@N=1048576  [incomplete: no answer for payload 9 within 180s (tab closed or device too slow)] -> Chrome-150-on-Windows_127.0.0.1_202611211545.txt
+2026-11-21T16:01:55.879Z  Chrome 157 on Windows    172.20.16.1     matmul:simd@N=768  saxpy:js@N=4194304  -> Chrome-157-on-Windows_172.20.16.1_202611211601.txt
+2026-11-21T16:47:18.434Z  Chrome 150 on Windows    172.20.16.1     matmul:simd@N=768  saxpy:simd@N=4194304  -> Chrome-150-on-Windows_172.20.16.1_202611211647.txt
+2026-11-21T17:03:12.632Z  Firefox 159 on Linux     172.20.16.1     matmul:simd@N=768  saxpy:js@N=4194304  -> Firefox-159-on-Linux_172.20.16.1_202611211702.txt
+2026-11-21T18:20:25.861Z  Chrome 156 on Linux      172.20.16.1     matmul:simd@N=768  saxpy:js@N=4194304  -> Chrome-156-on-Linux_172.20.16.1_202611211819.txt

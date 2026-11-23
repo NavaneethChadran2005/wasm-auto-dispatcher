@@ -1,0 +1,634 @@
+{
+ "schema": 1,
+ "createdAt": "2026-11-21T17:03:12.631Z",
+ "label": "Firefox 159 on Linux",
+ "env": {
+  "ua": "Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0",
+  "cores": 4,
+  "deviceMemoryGB": null,
+  "secureContext": false,
+  "crossOriginIsolated": false,
+  "wasm": true,
+  "simd": true,
+  "threads": false,
+  "webgpu": false,
+  "gpu": null,
+  "ip": "172.20.16.1"
+ },
+ "config": {
+  "remote": true,
+  "timerResolutionMs": 1,
+  "maxReps": 15,
+  "budgetMs": 1500
+ },
+ "inits": {
+  "js": {
+   "load_ms": 0,
+   "setup_ms": 0
+  },
+  "wasm": {
+   "load_ms": 2464,
+   "setup_ms": 0
+  },
+  "simd": {
+   "load_ms": 1275,
+   "setup_ms": 1
+  }
+ },
+ "results": [
+  {
+   "kernel": "matmul",
+   "N": 128,
+   "backend": "js",
+   "first_ms": 18,
+   "rel_error": 1.8476085109716536e-7,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 14,
+   "iqr_ms": 1,
+   "ci95_ms": [
+    14,
+    15
+   ],
+   "min_ms": 13,
+   "gflops": 0.29959314285714284,
+   "phases_ms": {
+    "in_ms": 0,
+    "exec_ms": 14,
+    "out_ms": 0
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 128,
+   "backend": "simd",
+   "first_ms": 11,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 2,
+   "iqr_ms": 1,
+   "ci95_ms": [
+    2,
+    3
+   ],
+   "min_ms": 1,
+   "gflops": 2.097152,
+   "phases_ms": {
+    "in_ms": 0,
+    "exec_ms": 2,
+    "out_ms": 0
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 128,
+   "backend": "wasm",
+   "first_ms": 5,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 4,
+   "iqr_ms": 1,
+   "ci95_ms": [
+    4,
+    5
+   ],
+   "min_ms": 3,
+   "gflops": 1.048576,
+   "phases_ms": {
+    "in_ms": 0,
+    "exec_ms": 4,
+    "out_ms": 0
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 192,
+   "backend": "wasm",
+   "first_ms": 17,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 16,
+   "iqr_ms": 3,
+   "ci95_ms": [
+    15,
+    18
+   ],
+   "min_ms": 14,
+   "gflops": 0.884736,
+   "phases_ms": {
+    "in_ms": 0,
+    "exec_ms": 15,
+    "out_ms": 0
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 192,
+   "backend": "simd",
+   "first_ms": 6,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 6,
+   "iqr_ms": 1,
+   "ci95_ms": [
+    6,
+    7
+   ],
+   "min_ms": 5,
+   "gflops": 2.359296,
+   "phases_ms": {
+    "in_ms": 0,
+    "exec_ms": 5,
+    "out_ms": 0
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 192,
+   "backend": "js",
+   "first_ms": 74,
+   "rel_error": 1.9245558702418242e-7,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 49,
+   "iqr_ms": 5,
+   "ci95_ms": [
+    48,
+    54
+   ],
+   "min_ms": 47,
+   "gflops": 0.28889338775510204,
+   "phases_ms": {
+    "in_ms": 0,
+    "exec_ms": 49,
+    "out_ms": 0
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 256,
+   "backend": "simd",
+   "first_ms": 18,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 15,
+   "iqr_ms": 2.5,
+   "ci95_ms": [
+    14,
+    17
+   ],
+   "min_ms": 14,
+   "gflops": 2.2369621333333334,
+   "phases_ms": {
+    "in_ms": 0,
+    "exec_ms": 14,
+    "out_ms": 0
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 256,
+   "backend": "js",
+   "first_ms": 108,
+   "rel_error": 2.9417449195329803e-7,
+   "correct": true,
+   "reps": 14,
+   "median_ms": 106.5,
+   "iqr_ms": 5,
+   "ci95_ms": [
+    106,
+    110
+   ],
+   "min_ms": 105,
+   "gflops": 0.3150650892018779,
+   "phases_ms": {
+    "in_ms": 0,
+    "exec_ms": 106.5,
+    "out_ms": 0
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 256,
+   "backend": "wasm",
+   "first_ms": 32,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 32,
+   "iqr_ms": 1,
+   "ci95_ms": [
+    31,
+    32
+   ],
+   "min_ms": 31,
+   "gflops": 1.048576,
+   "phases_ms": {
+    "in_ms": 0,
+    "exec_ms": 31,
+    "out_ms": 0
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 384,
+   "backend": "wasm",
+   "first_ms": 107,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 111,
+   "iqr_ms": 3.5,
+   "ci95_ms": [
+    108,
+    112
+   ],
+   "min_ms": 106,
+   "gflops": 1.0202361081081082,
+   "phases_ms": {
+    "in_ms": 1,
+    "exec_ms": 109,
+    "out_ms": 1
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 384,
+   "backend": "simd",
+   "first_ms": 46,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 42,
+   "iqr_ms": 1.5,
+   "ci95_ms": [
+    42,
+    44
+   ],
+   "min_ms": 41,
+   "gflops": 2.696338285714286,
+   "phases_ms": {
+    "in_ms": 1,
+    "exec_ms": 41,
+    "out_ms": 1
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 384,
+   "backend": "js",
+   "first_ms": 356,
+   "rel_error": 2.6286509415071936e-7,
+   "correct": true,
+   "reps": 5,
+   "median_ms": 357,
+   "iqr_ms": 2,
+   "ci95_ms": [
+    356,
+    368
+   ],
+   "min_ms": 356,
+   "gflops": 0.31721626890756305,
+   "phases_ms": {
+    "in_ms": 0,
+    "exec_ms": 357,
+    "out_ms": 0
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 512,
+   "backend": "simd",
+   "first_ms": 198,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 8,
+   "median_ms": 144,
+   "iqr_ms": 28.5,
+   "ci95_ms": [
+    131,
+    170
+   ],
+   "min_ms": 129,
+   "gflops": 1.864135111111111,
+   "phases_ms": {
+    "in_ms": 1,
+    "exec_ms": 142,
+    "out_ms": 1
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 512,
+   "backend": "js",
+   "first_ms": 843,
+   "rel_error": 3.0671387470308816e-7,
+   "correct": true,
+   "reps": 5,
+   "median_ms": 853,
+   "iqr_ms": 78,
+   "ci95_ms": [
+    848,
+    1019
+   ],
+   "min_ms": 848,
+   "gflops": 0.31469572801875734,
+   "phases_ms": {
+    "in_ms": 0,
+    "exec_ms": 853,
+    "out_ms": 0
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 512,
+   "backend": "wasm",
+   "first_ms": 331,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 5,
+   "median_ms": 285,
+   "iqr_ms": 11,
+   "ci95_ms": [
+    266,
+    309
+   ],
+   "min_ms": 266,
+   "gflops": 0.9418787929824561,
+   "phases_ms": {
+    "in_ms": 1,
+    "exec_ms": 280,
+    "out_ms": 1
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 768,
+   "backend": "wasm",
+   "first_ms": 1029,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 5,
+   "median_ms": 976,
+   "iqr_ms": 16,
+   "ci95_ms": [
+    926,
+    997
+   ],
+   "min_ms": 926,
+   "gflops": 0.928247606557377,
+   "phases_ms": {
+    "in_ms": 2,
+    "exec_ms": 970,
+    "out_ms": 3
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 768,
+   "backend": "js",
+   "first_ms": 2932,
+   "rel_error": 2.729897461638969e-7,
+   "correct": true,
+   "reps": 5,
+   "median_ms": 2949,
+   "iqr_ms": 111,
+   "ci95_ms": [
+    2861,
+    3059
+   ],
+   "min_ms": 2861,
+   "gflops": 0.307212500508647,
+   "phases_ms": {
+    "in_ms": 0,
+    "exec_ms": 2949,
+    "out_ms": 0
+   }
+  },
+  {
+   "kernel": "matmul",
+   "N": 768,
+   "backend": "simd",
+   "first_ms": 655,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 5,
+   "median_ms": 644,
+   "iqr_ms": 91,
+   "ci95_ms": [
+    535,
+    949
+   ],
+   "min_ms": 535,
+   "gflops": 1.4067851925465837,
+   "phases_ms": {
+    "in_ms": 2,
+    "exec_ms": 637,
+    "out_ms": 4
+   }
+  },
+  {
+   "kernel": "saxpy",
+   "N": 262144,
+   "backend": "js",
+   "first_ms": 5,
+   "rel_error": 9.540235082840723e-8,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 3,
+   "iqr_ms": 2,
+   "ci95_ms": [
+    2,
+    4
+   ],
+   "min_ms": 1,
+   "gflops": 0.17476266666666668,
+   "phases_ms": {
+    "in_ms": 0,
+    "exec_ms": 3,
+    "out_ms": 0
+   }
+  },
+  {
+   "kernel": "saxpy",
+   "N": 262144,
+   "backend": "simd",
+   "first_ms": 4,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 4,
+   "iqr_ms": 3.5,
+   "ci95_ms": [
+    4,
+    7
+   ],
+   "min_ms": 3,
+   "gflops": 0.131072,
+   "phases_ms": {
+    "in_ms": 1,
+    "exec_ms": 1,
+    "out_ms": 2
+   }
+  },
+  {
+   "kernel": "saxpy",
+   "N": 262144,
+   "backend": "wasm",
+   "first_ms": 3,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 4,
+   "iqr_ms": 1.5,
+   "ci95_ms": [
+    3,
+    4
+   ],
+   "min_ms": 3,
+   "gflops": 0.131072,
+   "phases_ms": {
+    "in_ms": 1,
+    "exec_ms": 1,
+    "out_ms": 2
+   }
+  },
+  {
+   "kernel": "saxpy",
+   "N": 1048576,
+   "backend": "wasm",
+   "first_ms": 15,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 15,
+   "iqr_ms": 2.5,
+   "ci95_ms": [
+    14,
+    17
+   ],
+   "min_ms": 13,
+   "gflops": 0.13981013333333334,
+   "phases_ms": {
+    "in_ms": 4,
+    "exec_ms": 5,
+    "out_ms": 6
+   }
+  },
+  {
+   "kernel": "saxpy",
+   "N": 1048576,
+   "backend": "simd",
+   "first_ms": 14,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 13,
+   "iqr_ms": 3.5,
+   "ci95_ms": [
+    12,
+    16
+   ],
+   "min_ms": 11,
+   "gflops": 0.16131938461538461,
+   "phases_ms": {
+    "in_ms": 4,
+    "exec_ms": 4,
+    "out_ms": 5
+   }
+  },
+  {
+   "kernel": "saxpy",
+   "N": 1048576,
+   "backend": "js",
+   "first_ms": 13,
+   "rel_error": 9.540235082840723e-8,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 9,
+   "iqr_ms": 0.5,
+   "ci95_ms": [
+    8.975000000000001,
+    9
+   ],
+   "min_ms": 8,
+   "gflops": 0.23301688888888888,
+   "phases_ms": {
+    "in_ms": 0,
+    "exec_ms": 9,
+    "out_ms": 0
+   }
+  },
+  {
+   "kernel": "saxpy",
+   "N": 4194304,
+   "backend": "wasm",
+   "first_ms": 53,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 50,
+   "iqr_ms": 3.5,
+   "ci95_ms": [
+    48,
+    53
+   ],
+   "min_ms": 47,
+   "gflops": 0.16777216,
+   "phases_ms": {
+    "in_ms": 13,
+    "exec_ms": 16,
+    "out_ms": 20
+   }
+  },
+  {
+   "kernel": "saxpy",
+   "N": 4194304,
+   "backend": "js",
+   "first_ms": 36,
+   "rel_error": 9.539736340767014e-8,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 33,
+   "iqr_ms": 0.5,
+   "ci95_ms": [
+    33,
+    33
+   ],
+   "min_ms": 33,
+   "gflops": 0.25420024242424244,
+   "phases_ms": {
+    "in_ms": 0,
+    "exec_ms": 33,
+    "out_ms": 0
+   }
+  },
+  {
+   "kernel": "saxpy",
+   "N": 4194304,
+   "backend": "simd",
+   "first_ms": 67,
+   "rel_error": 0,
+   "correct": true,
+   "reps": 15,
+   "median_ms": 49,
+   "iqr_ms": 3,
+   "ci95_ms": [
+    48,
+    50.049999999999955
+   ],
+   "min_ms": 47,
+   "gflops": 0.17119608163265307,
+   "phases_ms": {
+    "in_ms": 13,
+    "exec_ms": 16,
+    "out_ms": 20
+   }
+  }
+ ]
+}

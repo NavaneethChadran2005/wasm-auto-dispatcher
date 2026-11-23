@@ -7,6 +7,7 @@ export async function detectFeatures() {
     ua: nav.userAgent ?? "node",
     cores: nav.hardwareConcurrency ?? 4,
     deviceMemoryGB: nav.deviceMemory ?? null,
+    secureContext: globalThis.isSecureContext ?? true,          // false on plain http://<lan-ip>: WebGPU + threads are disabled
     crossOriginIsolated: globalThis.crossOriginIsolated ?? true, // Node has no such restriction
     wasm: typeof WebAssembly === "object",
     simd: false,

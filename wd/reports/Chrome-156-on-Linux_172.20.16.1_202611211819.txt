@@ -1,0 +1,37 @@
+==============================================================================
+ BACK-END REPORT: Chrome 156 on Linux
+==============================================================================
+ device       : Chrome 156 on Linux   (ip 172.20.16.1, client bfgruvbc)
+ browser UA   : Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36
+ hardware     : 4 logical cores
+ capabilities : SIMD yes | threads NO | WebGPU NO | secure context NO | isolated NO
+ timer tick   : 0.100 ms   (medians below 1.00 ms are marked '?' = unreliable)
+ back-ends run: js, wasm, simd
+ payloads     : 9 measured, 0 failed, 0 skipped   | started 2026-11-21T18:19:28.476Z
+
+ LIMITATIONS
+  - Opened over plain HTTP from a network address, so the browser disabled WebGPU and threads and coarsened its timers. Only JS / WASM / SIMD were tested. For threads + WebGPU, serve over trusted HTTPS (node controller.js --https cert key) or open the page via localhost (SSH / adb tunnel).
+
+ BEST BACK-END PER PAYLOAD   (steady = lowest median ms per call; total = load+setup+first call+(m-1)*median)
+  kernel  N        best_steady  median_ms  GFLOP/s  best_total(m)  total_ms  all medians (ms)
+  matmul  128      simd         2.000      2.10     simd (m=10)    55.90     simd=2.000 wasm=5.200 js=14.000
+  matmul  192      simd         6.400      2.21     simd (m=10)    93.40     simd=6.400 wasm=16.700 js=44.900
+  matmul  256      simd         14.700     2.28     simd (m=10)    175.60    simd=14.700 wasm=40.100 js=105.700
+  matmul  384      simd         48.000     2.36     simd (m=10)    509.70    simd=48.000 wasm=131.600 js=353.100
+  matmul  512      simd         123.000    2.18     simd (m=10)    1258.20   simd=123.000 wasm=314.300 js=843.300
+  matmul  768      simd         446.200    2.03     simd (m=10)    4494.20   simd=446.200 wasm=1061.000 js=2822.800
+  saxpy   262144   js           2.700      0.19     js (m=10)      33.10     js=2.700 simd=3.300 wasm=3.300
+  saxpy   1048576  js           10.000     0.21     js (m=10)      99.50     js=10.000 simd=11.900 wasm=12.400
+  saxpy   4194304  js           38.700     0.22     js (m=10)      387.10    js=38.700 wasm=47.800 simd=47.900
+
+ RECOMMENDATION FOR THIS DEVICE
+  matmul
+    repeated calls : N=128-768: simd
+    single call    : N=128-768: simd   (includes start-up cost)
+  saxpy
+    repeated calls : N=262144-4194304: js
+    single call    : N=262144-4194304: js   (includes start-up cost)
+
+ NOT TESTED ON THIS DEVICE: threads, webgpu  (see limitations)
+
+ '?' = measurement within timer noise; treat as unreliable. Rankings use medians of repeated calls; spreads are in the dataset .json.

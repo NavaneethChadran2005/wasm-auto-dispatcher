@@ -1,0 +1,33 @@
+==============================================================================
+ BACK-END REPORT: Chrome 150 on Windows
+==============================================================================
+ device       : Chrome 150 on Windows   (ip 127.0.0.1, client 39mwl1ye)
+ browser UA   : Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.146.0 Chrome/150.0.7871.250 Electron/43.8.6 Safari/537.36
+ hardware     : 16 logical cores, ~16 GB RAM, GPU amd
+ capabilities : SIMD yes | threads yes | WebGPU yes | secure context yes | isolated yes
+ timer tick   : 0.005 ms   (medians below 0.20 ms are marked '?' = unreliable)
+ back-ends run: js, wasm, simd, threads, webgpu
+ payloads     : 8 measured, 1 failed, 0 skipped   | started 2026-11-21T15:45:16.360Z
+ NOTE         : incomplete: no answer for payload 9 within 180s (tab closed or device too slow)
+
+ BEST BACK-END PER PAYLOAD   (steady = lowest median ms per call; total = load+setup+first call+(m-1)*median)
+  kernel  N        best_steady  median_ms  GFLOP/s  best_total(m)   total_ms  all medians (ms)
+  matmul  128      threads?     0.185      22.67    simd? (m=10)    8.44      threads=0.185 simd=0.255 wasm=0.640 js=2.480 webgpu=6.035
+  matmul  192      threads      0.415      34.11    simd (m=10)     11.89     threads=0.415 simd=0.805 wasm=2.170 webgpu=5.965 js=8.385
+  matmul  256      threads      0.760      44.15    simd (m=10)     21.50     threads=0.760 simd=1.750 wasm=4.545 webgpu=6.450 js=19.800
+  matmul  384      threads      2.295      49.34    threads (m=10)  51.43     threads=2.295 simd=5.730 webgpu=6.575 wasm=15.780 js=66.750
+  matmul  512      threads      4.665      57.54    threads (m=10)  74.66     threads=4.665 webgpu=6.735 simd=13.625 wasm=39.350 js=157.515
+  matmul  768      webgpu       10.415     86.99    threads (m=10)  165.16    webgpu=10.415 threads=13.580 simd=48.990 wasm=252.200 js=1191.560
+  saxpy   262144   simd         0.320      1.64     js (m=10)       5.16      simd=0.320 wasm=0.365 js=0.400 threads=0.805 webgpu=6.535
+  saxpy   1048576  simd         1.545      1.36     js (m=10)       16.65     simd=1.545 js=1.550 wasm=1.635 threads=2.485 webgpu=11.100
+  saxpy   4194304  FAILED                                                     no answer for payload 9 within 180s (tab closed or device too slow)
+
+ RECOMMENDATION FOR THIS DEVICE
+  matmul
+    repeated calls : N=192-512: threads;  N=768: webgpu
+    single call    : N=192-512: simd;  N=768: threads   (includes start-up cost)
+  saxpy
+    repeated calls : N=262144-1048576: simd
+    single call    : N=262144-1048576: js   (includes start-up cost)
+
+ '?' = measurement within timer noise; treat as unreliable. Rankings use medians of repeated calls; spreads are in the dataset .json.
